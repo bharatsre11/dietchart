@@ -1,0 +1,461 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Premium Diet Planner</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins',sans-serif;
+    }
+
+    body{
+      background:linear-gradient(135deg,#0f172a,#111827,#1e293b);
+      min-height:100vh;
+      padding:30px;
+      color:white;
+      overflow-x:hidden;
+    }
+
+    .container{
+      max-width:1400px;
+      margin:auto;
+    }
+
+    /* HEADER */
+
+    .top-section{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+      flex-wrap:wrap;
+      margin-bottom:30px;
+    }
+
+    .title-box h1{
+      font-size:42px;
+      font-weight:700;
+      background:linear-gradient(to right,#22c55e,#14b8a6);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .title-box p{
+      color:#cbd5e1;
+      margin-top:8px;
+    }
+
+    .progress-card{
+      background:rgba(255,255,255,0.08);
+      backdrop-filter:blur(10px);
+      padding:20px;
+      border-radius:20px;
+      min-width:280px;
+      border:1px solid rgba(255,255,255,0.1);
+      box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .progress-card h3{
+      margin-bottom:15px;
+    }
+
+    .progress-bar{
+      width:100%;
+      height:12px;
+      background:#334155;
+      border-radius:20px;
+      overflow:hidden;
+    }
+
+    .progress{
+      width:35%;
+      height:100%;
+      background:linear-gradient(to right,#22c55e,#14b8a6);
+      border-radius:20px;
+    }
+
+    /* DAY BUTTONS */
+
+    .days{
+      display:flex;
+      gap:15px;
+      overflow-x:auto;
+      padding-bottom:10px;
+      margin-bottom:30px;
+    }
+
+    .days button{
+      border:none;
+      padding:14px 24px;
+      border-radius:14px;
+      cursor:pointer;
+      color:white;
+      background:rgba(255,255,255,0.08);
+      backdrop-filter:blur(10px);
+      font-weight:600;
+      transition:0.3s;
+      min-width:110px;
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .days button:hover{
+      transform:translateY(-3px);
+      background:#14b8a6;
+    }
+
+    .days button.active{
+      background:linear-gradient(to right,#22c55e,#14b8a6);
+      box-shadow:0 5px 20px rgba(20,184,166,0.5);
+    }
+
+    /* SEARCH */
+
+    .search-box{
+      margin-bottom:25px;
+    }
+
+    .search-box input{
+      width:100%;
+      padding:18px;
+      border-radius:16px;
+      border:none;
+      outline:none;
+      background:rgba(255,255,255,0.08);
+      color:white;
+      font-size:16px;
+      backdrop-filter:blur(10px);
+    }
+
+    .search-box input::placeholder{
+      color:#cbd5e1;
+    }
+
+    /* MEAL GRID */
+
+    .meal-container{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:25px;
+    }
+
+    .meal-card{
+      background:rgba(255,255,255,0.08);
+      backdrop-filter:blur(16px);
+      border-radius:24px;
+      padding:25px;
+      border:1px solid rgba(255,255,255,0.08);
+      transition:0.4s;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .meal-card::before{
+      content:"";
+      position:absolute;
+      width:150px;
+      height:150px;
+      background:rgba(34,197,94,0.15);
+      border-radius:50%;
+      top:-60px;
+      right:-60px;
+    }
+
+    .meal-card:hover{
+      transform:translateY(-8px);
+      box-shadow:0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .meal-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:15px;
+    }
+
+    .meal-title{
+      font-size:22px;
+      font-weight:600;
+    }
+
+    .time{
+      font-size:13px;
+      background:rgba(255,255,255,0.1);
+      padding:6px 10px;
+      border-radius:10px;
+      color:#cbd5e1;
+    }
+
+    .meal-text{
+      color:#e2e8f0;
+      line-height:1.8;
+      margin-top:15px;
+      font-size:15px;
+    }
+
+    /* TAGS */
+
+    .tags{
+      margin-top:18px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .tag{
+      padding:8px 14px;
+      border-radius:30px;
+      font-size:12px;
+      background:rgba(255,255,255,0.08);
+      color:#86efac;
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    /* CHECKBOX */
+
+    .complete{
+      margin-top:20px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:#cbd5e1;
+      font-size:14px;
+    }
+
+    .complete input{
+      width:18px;
+      height:18px;
+      accent-color:#22c55e;
+      cursor:pointer;
+    }
+
+    /* MOBILE */
+
+    @media(max-width:768px){
+
+      body{
+        padding:18px;
+      }
+
+      .title-box h1{
+        font-size:32px;
+      }
+
+      .meal-container{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="top-section">
+
+      <div class="title-box">
+        <h1>🥗 Premium Diet Planner</h1>
+        <p>Track your healthy lifestyle with premium meal planning.</p>
+      </div>
+
+      <div class="progress-card">
+        <h3>🔥 Weekly Progress</h3>
+
+        <div class="progress-bar">
+          <div class="progress"></div>
+        </div>
+
+        <p style="margin-top:12px;color:#cbd5e1;">
+          35% completed this week
+        </p>
+      </div>
+
+    </div>
+
+    <!-- DAY BUTTONS -->
+
+    <div class="days">
+      <button class="active" onclick="showDay(0,this)">Day 1</button>
+      <button onclick="showDay(1,this)">Day 2</button>
+      <button onclick="showDay(2,this)">Day 3</button>
+      <button onclick="showDay(3,this)">Day 4</button>
+      <button onclick="showDay(4,this)">Day 5</button>
+      <button onclick="showDay(5,this)">Day 6</button>
+      <button onclick="showDay(6,this)">Day 7</button>
+    </div>
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="🔍 Search meals, foods, nutrients..."
+        onkeyup="filterMeals()"
+      />
+    </div>
+
+    <!-- MEALS -->
+
+    <div class="meal-container" id="mealContainer"></div>
+
+  </div>
+
+  <script>
+
+    const dietPlan = [
+
+      [
+        ["🌅 Early Morning","6:30 AM","Warm water with cinnamon + almonds"],
+        ["🍳 Breakfast","8:30 AM","Egg Whole-Wheat Omelet + Green Tea"],
+        ["🍏 Mid Meal","11:00 AM","Curd + Chia Seeds"],
+        ["🍲 Lunch","1:30 PM","Dal Tadka + Veggies + Roti"],
+        ["☕ Snack","5:00 PM","Brazil nuts + Black Tea"],
+        ["🥗 Dinner","8:00 PM","Egg Bhurji + Salad"]
+      ],
+
+      [
+        ["🌅 Early Morning","6:30 AM","Warm water + almonds + walnuts"],
+        ["🍳 Breakfast","8:30 AM","Vegetable Oats Upma"],
+        ["🍏 Mid Meal","11:00 AM","Guava / Pomegranate"],
+        ["🍲 Lunch","1:30 PM","Kala Chana Chaat"],
+        ["☕ Snack","5:00 PM","Pumpkin seeds + Buttermilk"],
+        ["🥗 Dinner","8:00 PM","Paneer Tikka + Veggies"]
+      ],
+
+      [
+        ["🌅 Early Morning","6:30 AM","Methi water"],
+        ["🍳 Breakfast","8:30 AM","Moong Dal Cheela"],
+        ["🍏 Mid Meal","11:00 AM","Egg white + Orange"],
+        ["🍲 Lunch","1:30 PM","Sprouted Moong Salad"],
+        ["☕ Snack","5:00 PM","Roasted Makhana"],
+        ["🥗 Dinner","8:00 PM","Spinach Omelet + Soup"]
+      ],
+
+      [
+        ["🌅 Early Morning","6:30 AM","Warm water + nuts"],
+        ["🍳 Breakfast","8:30 AM","Eggs + Toast"],
+        ["🍏 Mid Meal","11:00 AM","Coconut Water"],
+        ["🍲 Lunch","1:30 PM","Quinoa Khichdi + Curd"],
+        ["☕ Snack","5:00 PM","Pumpkin seeds"],
+        ["🥗 Dinner","8:00 PM","Tofu with Mushrooms"]
+      ],
+
+      [
+        ["🌅 Early Morning","6:30 AM","Cinnamon water"],
+        ["🍳 Breakfast","8:30 AM","Vegetable Daliya"],
+        ["🍏 Mid Meal","11:00 AM","Apple with cinnamon"],
+        ["🍲 Lunch","1:30 PM","Rajma + Palak"],
+        ["☕ Snack","5:00 PM","Roasted Chana"],
+        ["🥗 Dinner","8:00 PM","Egg Bhurji + Salad"]
+      ],
+
+      [
+        ["🌅 Early Morning","6:30 AM","Warm water + nuts"],
+        ["🍳 Breakfast","8:30 AM","Besan Cheela"],
+        ["🍏 Mid Meal","11:00 AM","Spiced Buttermilk"],
+        ["🍲 Lunch","1:30 PM","Lobia Salad + Curd"],
+        ["☕ Snack","5:00 PM","Sunflower seeds"],
+        ["🥗 Dinner","8:00 PM","Paneer Bhurji + Salad"]
+      ],
+
+      [
+        ["🌅 Early Morning","6:30 AM","Methi water"],
+        ["🍳 Breakfast","8:30 AM","Scrambled Eggs + Tea"],
+        ["🍏 Mid Meal","11:00 AM","Papaya / Berries"],
+        ["🍲 Lunch","1:30 PM","Brown Rice + Dal"],
+        ["☕ Snack","5:00 PM","Pumpkin seeds"],
+        ["🥗 Dinner","8:00 PM","Mushroom Soup + Veggies"]
+      ]
+
+    ];
+
+    let currentMeals = dietPlan[0];
+
+    const mealContainer = document.getElementById("mealContainer");
+
+    function renderMeals(meals){
+
+      mealContainer.innerHTML = "";
+
+      meals.forEach(meal => {
+
+        mealContainer.innerHTML += `
+
+          <div class="meal-card">
+
+            <div class="meal-header">
+              <div class="meal-title">${meal[0]}</div>
+              <div class="time">${meal[1]}</div>
+            </div>
+
+            <div class="meal-text">
+              ${meal[2]}
+            </div>
+
+            <div class="tags">
+              <div class="tag">High Protein</div>
+              <div class="tag">Healthy</div>
+              <div class="tag">Balanced</div>
+            </div>
+
+            <div class="complete">
+              <input type="checkbox">
+              <span>Mark as completed</span>
+            </div>
+
+          </div>
+
+        `;
+      });
+
+    }
+
+    function showDay(index,button){
+
+      currentMeals = dietPlan[index];
+
+      document.querySelectorAll(".days button")
+      .forEach(btn => btn.classList.remove("active"));
+
+      button.classList.add("active");
+
+      renderMeals(currentMeals);
+
+    }
+
+    function filterMeals(){
+
+      const search = document
+      .getElementById("searchInput")
+      .value
+      .toLowerCase();
+
+      const filtered = currentMeals.filter(meal =>
+        meal[0].toLowerCase().includes(search) ||
+        meal[2].toLowerCase().includes(search)
+      );
+
+      renderMeals(filtered);
+
+    }
+
+    renderMeals(currentMeals);
+
+  </script>
+
+</body>
+</html>
+```
