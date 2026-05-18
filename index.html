@@ -1,235 +1,568 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Premium Weekly Diet Planner</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins',sans-serif;
+    }
+
+    body{
+      background:linear-gradient(135deg,#020617,#0f172a,#111827);
+      color:white;
+      min-height:100vh;
+      padding:25px;
+    }
+
+    .container{
+      max-width:1500px;
+      margin:auto;
+    }
+
+    .header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:20px;
+      margin-bottom:30px;
+    }
+
+    .title h1{
+      font-size:42px;
+      font-weight:700;
+      background:linear-gradient(to right,#22c55e,#14b8a6);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .title p{
+      color:#cbd5e1;
+      margin-top:8px;
+    }
+
+    .top-actions{
+      display:flex;
+      gap:15px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      padding:14px 22px;
+      border:none;
+      border-radius:14px;
+      cursor:pointer;
+      font-weight:600;
+      color:white;
+      transition:0.3s;
+    }
+
+    .reset-btn{
+      background:linear-gradient(to right,#ef4444,#dc2626);
+    }
+
+    .reset-btn:hover{
+      transform:translateY(-3px);
+      box-shadow:0 10px 25px rgba(239,68,68,0.4);
+    }
+
+    .water-btn{
+      background:linear-gradient(to right,#06b6d4,#0ea5e9);
+    }
+
+    .water-btn:hover{
+      transform:translateY(-3px);
+      box-shadow:0 10px 25px rgba(14,165,233,0.4);
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:20px;
+      margin-bottom:30px;
+    }
+
+    .stat-card{
+      background:rgba(255,255,255,0.07);
+      border:1px solid rgba(255,255,255,0.08);
+      backdrop-filter:blur(14px);
+      border-radius:22px;
+      padding:25px;
+    }
+
+    .stat-card h2{
+      font-size:32px;
+      margin-top:10px;
+      color:#22c55e;
+    }
+
+    .days{
+      display:flex;
+      gap:15px;
+      overflow-x:auto;
+      padding-bottom:12px;
+      margin-bottom:25px;
+    }
+
+    .days button{
+      border:none;
+      padding:14px 22px;
+      border-radius:16px;
+      background:rgba(255,255,255,0.07);
+      color:white;
+      cursor:pointer;
+      font-weight:600;
+      transition:0.3s;
+      min-width:120px;
+    }
+
+    .days button:hover{
+      transform:translateY(-3px);
+      background:#14b8a6;
+    }
+
+    .days button.active{
+      background:linear-gradient(to right,#22c55e,#14b8a6);
+      box-shadow:0 10px 30px rgba(20,184,166,0.4);
+    }
+
+    .search-box{
+      margin-bottom:25px;
+    }
+
+    .search-box input{
+      width:100%;
+      padding:18px;
+      border-radius:18px;
+      border:none;
+      outline:none;
+      background:rgba(255,255,255,0.08);
+      color:white;
+      font-size:16px;
+    }
+
+    .search-box input::placeholder{
+      color:#cbd5e1;
+    }
+
+    .meal-container{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:25px;
+    }
+
+    .meal-card{
+      background:rgba(255,255,255,0.07);
+      border:1px solid rgba(255,255,255,0.08);
+      backdrop-filter:blur(16px);
+      border-radius:24px;
+      padding:25px;
+      transition:0.4s;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .meal-card:hover{
+      transform:translateY(-8px);
+      box-shadow:0 20px 45px rgba(0,0,0,0.45);
+    }
+
+    .meal-card::before{
+      content:"";
+      position:absolute;
+      width:180px;
+      height:180px;
+      background:rgba(34,197,94,0.12);
+      border-radius:50%;
+      top:-80px;
+      right:-80px;
+    }
+
+    .meal-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:15px;
+    }
+
+    .meal-title{
+      font-size:22px;
+      font-weight:600;
+    }
+
+    .meal-time{
+      background:rgba(255,255,255,0.08);
+      padding:8px 12px;
+      border-radius:10px;
+      color:#cbd5e1;
+      font-size:13px;
+    }
+
+    .meal-text{
+      color:#e2e8f0;
+      line-height:1.8;
+      margin-top:15px;
+    }
+
+    .meal-footer{
+      margin-top:20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .calories{
+      background:rgba(34,197,94,0.15);
+      color:#86efac;
+      padding:10px 14px;
+      border-radius:12px;
+      font-size:14px;
+      border:1px solid rgba(34,197,94,0.15);
+    }
+
+    .checkbox{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:#cbd5e1;
+      font-size:14px;
+    }
+
+    .checkbox input{
+      width:18px;
+      height:18px;
+      accent-color:#22c55e;
+      cursor:pointer;
+    }
+
+    .footer{
+      margin-top:40px;
+      text-align:center;
+      color:#94a3b8;
+      font-size:14px;
+    }
+
+    @media(max-width:768px){
+
+      .title h1{
+        font-size:32px;
+      }
+
+      .meal-container{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+
+  <div class="header">
+
+    <div class="title">
+      <h1>🥗 Premium Weekly Diet Planner</h1>
+      <p>Healthy lifestyle • High Protein • Balanced Nutrition</p>
+    </div>
+
+    <div class="top-actions">
+
+      <button class="btn water-btn" onclick="drinkWater()">
+        💧 Water Tracker
+      </button>
+
+      <button class="btn reset-btn" onclick="resetWeek()">
+        🔄 Reset Week
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- STATS -->
+
+  <div class="stats">
+
+    <div class="stat-card">
+      <p>🔥 Estimated Daily Calories</p>
+      <h2 id="dailyCalories">1650</h2>
+    </div>
+
+    <div class="stat-card">
+      <p>✅ Meals Completed</p>
+      <h2 id="completedMeals">0</h2>
+    </div>
+
+    <div class="stat-card">
+      <p>💧 Water Intake</p>
+      <h2 id="waterCount">0 Glass</h2>
+    </div>
+
+  </div>
+
+  <!-- DAYS -->
+
+  <div class="days">
+
+    <button class="active" onclick="showDay(0,this)">Monday</button>
+    <button onclick="showDay(1,this)">Tuesday</button>
+    <button onclick="showDay(2,this)">Wednesday</button>
+    <button onclick="showDay(3,this)">Thursday</button>
+    <button onclick="showDay(4,this)">Friday</button>
+    <button onclick="showDay(5,this)">Saturday</button>
+    <button onclick="showDay(6,this)">Sunday</button>
+
+  </div>
+
+  <!-- SEARCH -->
+
+  <div class="search-box">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="🔍 Search meals, nutrients, foods..."
+      onkeyup="filterMeals()"
+    />
+  </div>
+
+  <!-- MEAL CARDS -->
+
+  <div class="meal-container" id="mealContainer"></div>
+
+  <div class="footer">
+    Built with ❤️ for a healthier lifestyle
+  </div>
+
+</div>
+
 <script>
 
-const dietPlan = [
+const weeklyDiet = [
 
-{
-day:"Monday",
-meals:[
-["🌅 Early Morning","6:30 AM","Warm water with cinnamon + almonds",80],
-["🍳 Breakfast","8:30 AM","Egg Whole-Wheat Omelet + Green Tea",320],
-["🍏 Mid Meal","11:00 AM","Curd + Chia Seeds",160],
-["🍲 Lunch","1:30 PM","Dal Tadka + Veggies + Roti",420],
-["☕ Snack","5:00 PM","Brazil nuts + Black Tea",120],
-["🥗 Dinner","8:00 PM","Egg Bhurji + Salad",280]
-]
-},
+  // MONDAY
 
-{
-day:"Tuesday",
-meals:[
-["🌅 Early Morning","6:30 AM","Warm water + almonds + walnuts",120],
-["🍳 Breakfast","8:30 AM","Vegetable Oats Upma",280],
-["🍏 Mid Meal","11:00 AM","Guava / Pomegranate",110],
-["🍲 Lunch","1:30 PM","Kala Chana Chaat",340],
-["☕ Snack","5:00 PM","Pumpkin seeds + Buttermilk",180],
-["🥗 Dinner","8:00 PM","Paneer Tikka + Veggies",390]
-]
-},
+  [
+    ["🌅 Early Morning","6:30 AM","Warm water + cinnamon + almonds","90 kcal"],
+    ["🍳 Breakfast","8:30 AM","2 Egg Whole Wheat Omelet + Green Tea","320 kcal"],
+    ["🍏 Mid Meal","11:00 AM","Curd + Chia Seeds","180 kcal"],
+    ["🍲 Lunch","1:30 PM","Dal Tadka + Veggies + Roti","450 kcal"],
+    ["☕ Snack","5:00 PM","Brazil Nuts + Black Tea","120 kcal"],
+    ["🥗 Dinner","8:00 PM","Egg Bhurji + Salad","320 kcal"]
+  ],
 
-{
-day:"Wednesday",
-meals:[
-["🌅 Early Morning","6:30 AM","Methi water",30],
-["🍳 Breakfast","8:30 AM","Moong Dal Cheela",320],
-["🍏 Mid Meal","11:00 AM","Egg white + Orange",110],
-["🍲 Lunch","1:30 PM","Sprouted Moong Salad",280],
-["☕ Snack","5:00 PM","Roasted Makhana",140],
-["🥗 Dinner","8:00 PM","Spinach Omelet + Soup",300]
-]
-},
+  // TUESDAY
 
-{
-day:"Thursday",
-meals:[
-["🌅 Early Morning","6:30 AM","Warm water + nuts",100],
-["🍳 Breakfast","8:30 AM","Eggs + Toast",340],
-["🍏 Mid Meal","11:00 AM","Coconut Water",60],
-["🍲 Lunch","1:30 PM","Quinoa Khichdi + Curd",410],
-["☕ Snack","5:00 PM","Pumpkin seeds",130],
-["🥗 Dinner","8:00 PM","Tofu with Mushrooms",320]
-]
-},
+  [
+    ["🌅 Early Morning","6:30 AM","Warm water + almonds + walnuts","120 kcal"],
+    ["🍳 Breakfast","8:30 AM","Vegetable Oats Upma","300 kcal"],
+    ["🍏 Mid Meal","11:00 AM","Guava / Pomegranate","140 kcal"],
+    ["🍲 Lunch","1:30 PM","Kala Chana Chaat","400 kcal"],
+    ["☕ Snack","5:00 PM","Pumpkin Seeds + Buttermilk","170 kcal"],
+    ["🥗 Dinner","8:00 PM","Paneer Tikka + Veggies","420 kcal"]
+  ],
 
-{
-day:"Friday",
-meals:[
-["🌅 Early Morning","6:30 AM","Cinnamon water",25],
-["🍳 Breakfast","8:30 AM","Vegetable Daliya",290],
-["🍏 Mid Meal","11:00 AM","Apple with cinnamon",95],
-["🍲 Lunch","1:30 PM","Rajma + Palak",450],
-["☕ Snack","5:00 PM","Roasted Chana",140],
-["🥗 Dinner","8:00 PM","Egg Bhurji + Salad",290]
-]
-},
+  // WEDNESDAY
 
-{
-day:"Saturday",
-meals:[
-["🌅 Early Morning","6:30 AM","Warm water + nuts",100],
-["🍳 Breakfast","8:30 AM","Besan Cheela",310],
-["🍏 Mid Meal","11:00 AM","Spiced Buttermilk",90],
-["🍲 Lunch","1:30 PM","Lobia Salad + Curd",350],
-["☕ Snack","5:00 PM","Sunflower seeds",150],
-["🥗 Dinner","8:00 PM","Paneer Bhurji + Salad",380]
-]
-},
+  [
+    ["🌅 Early Morning","6:30 AM","Methi Water","40 kcal"],
+    ["🍳 Breakfast","8:30 AM","Moong Dal Cheela + Paneer","350 kcal"],
+    ["🍏 Mid Meal","11:00 AM","Egg White + Orange","110 kcal"],
+    ["🍲 Lunch","1:30 PM","Sprouted Moong Salad","360 kcal"],
+    ["☕ Snack","5:00 PM","Roasted Makhana","150 kcal"],
+    ["🥗 Dinner","8:00 PM","Spinach Omelet + Soup","340 kcal"]
+  ],
 
-{
-day:"Sunday",
-meals:[
-["🌅 Early Morning","6:30 AM","Methi water",30],
-["🍳 Breakfast","8:30 AM","Scrambled Eggs + Tea",340],
-["🍏 Mid Meal","11:00 AM","Papaya / Berries",100],
-["🍲 Lunch","1:30 PM","Brown Rice + Dal",430],
-["☕ Snack","5:00 PM","Pumpkin seeds",130],
-["🥗 Dinner","8:00 PM","Mushroom Soup + Veggies",260]
-]
-}
+  // THURSDAY
+
+  [
+    ["🌅 Early Morning","6:30 AM","Warm water + nuts","110 kcal"],
+    ["🍳 Breakfast","8:30 AM","Boiled Eggs + Toast","330 kcal"],
+    ["🍏 Mid Meal","11:00 AM","Coconut Water","60 kcal"],
+    ["🍲 Lunch","1:30 PM","Quinoa Khichdi + Curd","430 kcal"],
+    ["☕ Snack","5:00 PM","Pumpkin Seeds","130 kcal"],
+    ["🥗 Dinner","8:00 PM","Tofu with Mushrooms","350 kcal"]
+  ],
+
+  // FRIDAY
+
+  [
+    ["🌅 Early Morning","6:30 AM","Cinnamon Water","30 kcal"],
+    ["🍳 Breakfast","8:30 AM","Vegetable Daliya","310 kcal"],
+    ["🍏 Mid Meal","11:00 AM","Apple with Cinnamon","120 kcal"],
+    ["🍲 Lunch","1:30 PM","Rajma + Palak","470 kcal"],
+    ["☕ Snack","5:00 PM","Roasted Chana","160 kcal"],
+    ["🥗 Dinner","8:00 PM","Egg Bhurji + Salad","330 kcal"]
+  ],
+
+  // SATURDAY
+
+  [
+    ["🌅 Early Morning","6:30 AM","Warm water + nuts","110 kcal"],
+    ["🍳 Breakfast","8:30 AM","Besan Cheela","340 kcal"],
+    ["🍏 Mid Meal","11:00 AM","Spiced Buttermilk","90 kcal"],
+    ["🍲 Lunch","1:30 PM","Lobia Salad + Curd","390 kcal"],
+    ["☕ Snack","5:00 PM","Sunflower Seeds","150 kcal"],
+    ["🥗 Dinner","8:00 PM","Paneer Bhurji + Salad","410 kcal"]
+  ],
+
+  // SUNDAY
+
+  [
+    ["🌅 Early Morning","6:30 AM","Methi Water","40 kcal"],
+    ["🍳 Breakfast","8:30 AM","Scrambled Eggs + Tea","340 kcal"],
+    ["🍏 Mid Meal","11:00 AM","Papaya / Berries","120 kcal"],
+    ["🍲 Lunch","1:30 PM","Brown Rice + Dal","480 kcal"],
+    ["☕ Snack","5:00 PM","Pumpkin Seeds","160 kcal"],
+    ["🥗 Dinner","8:00 PM","Mushroom Soup + Veggies","310 kcal"]
+  ]
 
 ];
 
-let currentMeals = dietPlan[0].meals;
-let currentDay = dietPlan[0].day;
+let currentMeals = weeklyDiet[0];
 
 const mealContainer = document.getElementById("mealContainer");
 
 function renderMeals(meals){
 
-mealContainer.innerHTML = "";
+  mealContainer.innerHTML = "";
 
-let totalCalories = 0;
+  meals.forEach((meal,index)=>{
 
-meals.forEach((meal,index)=>{
+    mealContainer.innerHTML += `
 
-totalCalories += meal[3];
+      <div class="meal-card">
 
-const checked =
-localStorage.getItem(currentDay + index) === "true"
-? "checked"
-: "";
+        <div class="meal-header">
+          <div class="meal-title">${meal[0]}</div>
+          <div class="meal-time">${meal[1]}</div>
+        </div>
 
-mealContainer.innerHTML += `
+        <div class="meal-text">
+          ${meal[2]}
+        </div>
 
-<div class="meal-card">
+        <div class="meal-footer">
 
-<div class="meal-header">
-<div class="meal-title">${meal[0]}</div>
-<div class="time">${meal[1]}</div>
-</div>
+          <div class="calories">
+            🔥 ${meal[3]}
+          </div>
 
-<div class="meal-text">
-${meal[2]}
-</div>
+          <div class="checkbox">
+            <input type="checkbox" onchange="updateCompleted()">
+            <span>Completed</span>
+          </div>
 
-<div class="tags">
-<div class="tag">🔥 ${meal[3]} kcal</div>
-<div class="tag">Healthy</div>
-<div class="tag">Protein Rich</div>
-</div>
+        </div>
 
-<div class="complete">
-<input
-type="checkbox"
-${checked}
-onchange="saveProgress('${currentDay + index}',this)"
->
-<span>Mark as completed</span>
-</div>
+      </div>
 
-</div>
-
-`;
-
-});
-
-mealContainer.innerHTML += `
-
-<div class="meal-card" style="border:2px solid #22c55e;">
-
-<h2 style="margin-bottom:15px;">
-🔥 Total Daily Calories
-</h2>
-
-<h1 style="
-font-size:48px;
-color:#22c55e;
-margin-bottom:10px;
-">
-${totalCalories}
-</h1>
-
-<p style="color:#cbd5e1;">
-Estimated calorie intake for ${currentDay}
-</p>
-
-<button onclick="resetWeek()"
-style="
-margin-top:20px;
-padding:14px 20px;
-border:none;
-border-radius:14px;
-background:linear-gradient(to right,#ef4444,#dc2626);
-color:white;
-font-weight:600;
-cursor:pointer;
-width:100%;
-font-size:16px;
-">
-♻️ Reset Weekly Progress
-</button>
-
-</div>
-
-`;
+    `;
+  });
 
 }
 
 function showDay(index,button){
 
-currentMeals = dietPlan[index].meals;
-currentDay = dietPlan[index].day;
+  currentMeals = weeklyDiet[index];
 
-document.querySelectorAll(".days button")
-.forEach(btn => btn.classList.remove("active"));
+  document.querySelectorAll(".days button")
+  .forEach(btn=>btn.classList.remove("active"));
 
-button.classList.add("active");
+  button.classList.add("active");
 
-renderMeals(currentMeals);
+  renderMeals(currentMeals);
 
-}
-
-function saveProgress(key,checkbox){
-
-localStorage.setItem(key,checkbox.checked);
-
-}
-
-function resetWeek(){
-
-localStorage.clear();
-
-renderMeals(currentMeals);
-
-alert("✅ Weekly progress reset successfully!");
+  calculateCalories();
 
 }
 
 function filterMeals(){
 
-const search = document
-.getElementById("searchInput")
-.value
-.toLowerCase();
+  const value = document
+  .getElementById("searchInput")
+  .value
+  .toLowerCase();
 
-const filtered = currentMeals.filter(meal =>
-meal[0].toLowerCase().includes(search) ||
-meal[2].toLowerCase().includes(search)
-);
+  const filtered = currentMeals.filter(meal =>
+    meal[0].toLowerCase().includes(value) ||
+    meal[2].toLowerCase().includes(value)
+  );
 
-renderMeals(filtered);
+  renderMeals(filtered);
+
+}
+
+function calculateCalories(){
+
+  let total = 0;
+
+  currentMeals.forEach(meal=>{
+    total += parseInt(meal[3]);
+  });
+
+  document.getElementById("dailyCalories").innerText = total;
+
+}
+
+function updateCompleted(){
+
+  const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+
+  document.getElementById("completedMeals").innerText = checked;
+
+}
+
+function resetWeek(){
+
+  document.querySelectorAll('input[type="checkbox"]')
+  .forEach(box=>box.checked=false);
+
+  localStorage.clear();
+
+  document.getElementById("completedMeals").innerText = 0;
+
+  alert("✅ Weekly progress has been reset!");
+
+}
+
+let water = 0;
+
+function drinkWater(){
+
+  water++;
+
+  document.getElementById("waterCount").innerText =
+  water + " Glass";
 
 }
 
 renderMeals(currentMeals);
 
+calculateCalories();
+
 </script>
+
+</body>
+</html>
+```
+
+Calorie estimates are based on common Indian meal nutrition references for eggs, dal, roti, paneer, legumes, chia seeds, rajma, and related foods. ([toolsarena.in][1])
+
+[1]: https://toolsarena.in/guides/indian-food-calorie-counter-guide?utm_source=chatgpt.com "Indian Food Calorie Chart — Roti, Rice, Dal, Paneer (2026) | ToolsArena | ToolsArena"
